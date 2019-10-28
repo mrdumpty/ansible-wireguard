@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+[Interface]
+PrivateKey = {{ item.private_key }}
+{% if item.listen_port is defined and item.listen_port %}
+ListenPort = {{ item.listen_port}}
+{% endif %}
+
+{% for peer in item.peers %}
+[Peer]
+PublicKey = {{ peer.public_key }}
+AllowedIPs = {% for allowed_ip in peer.allowed_ips -%}
+{{ allowed_ip }}{{ ", " if not loop.last else "" }}
+{%- endfor %}
+
+{% if peer.endpoint is defined and peer.endpoint %}
+Endpoint = {{ peer.endpoint }}
+{% endif %}
+{% if peer.keepalive is defined and peer.keepalive %}
+PersistentKeepalive = {{ peer.keepalive }}
+{% endif %}
+
+{% endfor %}

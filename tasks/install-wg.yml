@@ -1,0 +1,11 @@
+---
+# tasks file for wireguard
+
+- name: Add wireguard repositories
+  apt_repository:
+    repo: "{{ wireguard__ppa_repo }}"
+
+- name: Install wireguard package
+  apt:
+    name: wireguard
+    update_cache: yes

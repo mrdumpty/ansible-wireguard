@@ -1,0 +1,5 @@
+---
+# vars file for wireguard
+
+ansible_become: yes
+wireguard__ppa_repo: "ppa:wireguard/wireguard"

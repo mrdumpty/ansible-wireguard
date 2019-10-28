@@ -1,0 +1,22 @@
+---
+# defaults file for wireguard
+
+wireguard__tunnels:
+  - name: wg0
+    address_v4: 192.168.68.1
+    netmask_v4: 255.255.255.0
+    address_v6: 
+    netmask_v6: 64
+    private_key: 0CrLFmHPWBrpmKl42B0QYBhW04EmhObzDqBD7s69L3w=
+    listen_port: 8999
+    peers:
+      - endpoint:
+        keepalive: 
+        public_key:
+        allowed_ips:
+          - 0.0.0.0/0
+          - ::/0
+    v4_up_commands: []
+    v4_down_commands: []
+    v6_up_commands: []
+    v6_down_commands: []

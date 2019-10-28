@@ -1,0 +1,43 @@
+# {{ ansible_managed }}
+auto {{ item.name }}
+{% if item.address_v4 is defined and item.address_v4 %}
+iface {{ item.name }} inet static
+    address {{ item.address_v4 }}
+    netmask {{ item.netmask_v4 }}
+    pre-up ip link add $IFACE type wireguard || true
+    pre-up wg setconf $IFACE /etc/wireguard/$IFACE.conf || true
+{% if item.v4_up_commands is defined and item.v4_up_commands %}
+{% for v4_up_command in item.v4_up_commands %}
+    up {{ v4_up_command }} || true
+{% endfor %}
+{% endif %}
+{% if item.v4_down_commands is defined and item.v4_down_commands %}
+{% for v4_down_command in item.v4_down_commands %}
+    down {{ v4_down_command }} || true
+{% endfor %}
+{% endif %}
+    post-down ip link del $IFACE || true
+{% endif %}
+
+{% if item.address_v6 is defined and item.address_v6 %}
+iface {{ item.name }} inet6 static
+    address {{ item.address_v6 }}
+    netmask {{ item.netmask_v6 }}
+{% if item.address_v4 is not defined or not item.address_v4 %}
+    pre-up ip link add $IFACE type wireguard || true
+    pre-up wg setconf $IFACE /etc/wireguard/$IFACE.conf || true
+{% endif %}
+{% if item.v6_up_commands is defined and item.v6_up_commands %}
+{% for v6_up_command in item.v6_up_commands %}
+    up {{ v6_up_command }} || true
+{% endfor %}
+{% endif %}
+{% if item.v6_down_commands is defined and item.v6_down_commands %}
+{% for v6_down_command in item.v6_down_commands %}
+    down {{ v6_down_command }} || true
+{% endfor %}
+{% endif %}
+{% if item.address_v4 is not defined or not item.address_v4 %}
+    post-down ip link del $IFACE || true
+{% endif %}
+{% endif %}

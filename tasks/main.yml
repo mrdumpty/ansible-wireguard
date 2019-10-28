@@ -1,0 +1,14 @@
+---
+# tasks file for wireguard
+
+- name: Install wireguard
+  include_tasks: install-wg.yml
+  tags:
+    - install
+    - wg
+
+- name: Config wireguard
+  include_tasks: config-wg.yml
+  tags:
+    - config
+    - wg

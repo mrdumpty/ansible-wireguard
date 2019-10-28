@@ -1,0 +1,34 @@
+---
+# tasks file for wireguard
+
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "/etc/wireguard"
+    - "/etc/network/wireguard.d"
+
+- name: Create wg config files
+  template:
+    src: "etc/wireguard/tunnel.conf.j2"
+    dest: "/etc/wireguard/{{ item.name }}.conf"
+    owner: root
+    mode: 0600
+  with_items: "{{ wireguard__tunnels }}"
+  notify: restart networking
+
+- name: check /etc/network/interfaces inheritance
+  lineinfile:
+    path: /etc/network/interfaces
+    line: "source /etc/network/wireguard.d/*.cfg"
+  notify: restart networking
+
+- name: Create wg /etc/network/ files
+  template:
+    src: "etc/network/interfaces.d/wg-interface.cfg.j2"
+    dest: "/etc/network/wireguard.d/{{ item.name }}.cfg"
+    owner: root
+    mode: 0644
+  with_items: "{{ wireguard__tunnels }}"
+  notify: restart networking
