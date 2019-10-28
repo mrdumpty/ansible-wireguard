@@ -6,9 +6,9 @@ This role installs wireguard VPN on desired hosts. Tested on Ubuntu 16.04 and 18
 Requirements
 ------------
 
-ifupdown /etc/network/interfaces is used and ~must~ be installed on target host,
+ifupdown /etc/network/interfaces is used and **must** be installed on target host,
 netplan.io is discouraged due to the lack of hook scripts support (pre-up/post-down/etc).
-It ~must~ be disabled and purged.
+It **must** be disabled and purged.
 Native systemd-networkd support will be added in the future as a option.
 
 Role Variables
